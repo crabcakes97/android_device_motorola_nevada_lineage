@@ -1249,15 +1249,15 @@ vendor/lib64/libcamera2ndk_vendor.so
 # Stock C2 HIDL interface libs: platform c2@1.x vendor libs drag the platform
 # hidl@1.x chain (packaging conflict with the _vendor blobs below), so stock
 # copies are used with _vendor suffix like the rest of the MTK C2 stack.
-vendor/lib64/android.hardware.media.c2@1.0.so;MODULE_SUFFIX=_vendor
-vendor/lib64/android.hardware.media.c2@1.1.so;MODULE_SUFFIX=_vendor
-vendor/lib64/android.hardware.media.c2@1.2.so;MODULE_SUFFIX=_vendor
+# REVERTED: dropped vendor/lib64/android.hardware.media.c2@1.0.so;MODULE_SUFFIX=_vendor — platform C2 stack used wholesale; see platform patch note in extract-files.py
+# REVERTED: dropped vendor/lib64/android.hardware.media.c2@1.1.so;MODULE_SUFFIX=_vendor — platform C2 stack used wholesale; see platform patch note in extract-files.py
+# REVERTED: dropped vendor/lib64/android.hardware.media.c2@1.2.so;MODULE_SUFFIX=_vendor — platform C2 stack used wholesale; see platform patch note in extract-files.py
 # NOTE: codec2_hidl@1.x stock blobs restored with _vendor suffix (see
 # videotelephony precedent): platform builds these for system but its vendor
 # static variant is missing plugin includes; stock C2 service links all three.
-vendor/lib64/libcodec2_hidl@1.0.so;MODULE_SUFFIX=_vendor
-vendor/lib64/libcodec2_hidl@1.1.so;MODULE_SUFFIX=_vendor
-vendor/lib64/libcodec2_hidl@1.2.so;MODULE_SUFFIX=_vendor
+# REVERTED: dropped vendor/lib64/libcodec2_hidl@1.0.so;MODULE_SUFFIX=_vendor — platform C2 stack used wholesale; see platform patch note in extract-files.py
+# REVERTED: dropped vendor/lib64/libcodec2_hidl@1.1.so;MODULE_SUFFIX=_vendor — platform C2 stack used wholesale; see platform patch note in extract-files.py
+# REVERTED: dropped vendor/lib64/libcodec2_hidl@1.2.so;MODULE_SUFFIX=_vendor — platform C2 stack used wholesale; see platform patch note in extract-files.py
 vendor/lib64/libcodec2_hidl_plugin.so
 vendor/lib64/libcodec2_soft_ac4dec.so
 # AUTOFIX: dropped vendor/lib64/libcodec2_soft_common.so (platform builds libcodec2_soft_common for system; Soong partition mismatch)
