@@ -745,6 +745,14 @@ vendor/lib64/libmtkspparser_swb.so
 vendor/lib64/libmtkutils.so
 vendor/lib64/libnwk_opt_halwrap_vendor.so
 vendor/lib64/libratconfig.so
+# NOTE: stock AIDL radio/keymint V1 libs (verified present in RETUS dump).
+# librilfusion + libtpa reference V1-namespace symbols but DT-list only V2
+# (whose V2-namespace symbols they never use); the V1 blobs provide them.
+# Kept as plain entries (libcodec2_hidl_plugin precedent); V2 stays stripped
+# so only one AIDL base version remains in each closure (Soong dup rule).
+vendor/lib64/android.hardware.radio.sim-V1-ndk.so;MODULE_SUFFIX=_vendor
+vendor/lib64/android.hardware.radio.config-V1-ndk.so;MODULE_SUFFIX=_vendor
+vendor/lib64/android.hardware.security.keymint-V1-ndk.so;MODULE_SUFFIX=_vendor
 vendor/lib64/librilfusion.so
 vendor/lib64/libtrm.so
 vendor/lib64/libvia-ril.so

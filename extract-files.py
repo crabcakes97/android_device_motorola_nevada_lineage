@@ -43,6 +43,11 @@ def lib_fixup_vendor_suffix(lib: str, partition: str, *args, **kwargs):
 lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
     ('vendor.mediatek.hardware.videotelephony@1.0',): lib_fixup_vendor_suffix,
+    (
+        'android.hardware.radio.sim-V1-ndk',
+        'android.hardware.radio.config-V1-ndk',
+        'android.hardware.security.keymint-V1-ndk',
+    ): lib_fixup_vendor_suffix,
 }
 
 blob_fixups: blob_fixups_user_type = {
@@ -92,16 +97,21 @@ blob_fixups: blob_fixups_user_type = {
         .replace_needed('android.hardware.security.secureclock-V1-ndk_platform.so', 'android.hardware.security.secureclock-V1-ndk.so'),
     'vendor/bin/hw/mtkfusionrild': blob_fixup()
         .add_needed('libutils-v32.so'),
-    # libtpa DT_NEEDEDs keymint-V2-ndk but references no V2 symbols (spurious
-    # dep); V4 arrives transitively via libkeymint and Soong rejects both AIDL
-    # versions in one closure.
+    # libtpa DT_NEEDEDs keymint-V2-ndk but references no V2 symbols; its
+    # keymint refs are V1-namespace (fromBinder etc.), provided by the stock
+    # keymint-V1 blob below. V2 stays stripped so only one AIDL base version
+    # remains in the closure (Soong dup rule).
     'vendor/lib64/libtpa.so': blob_fixup()
-        .remove_needed('android.hardware.security.keymint-V2-ndk.so'),
+        .remove_needed('android.hardware.security.keymint-V2-ndk.so')
+        .add_needed('android.hardware.security.keymint-V1-ndk.so'),
     # librilfusion DT_NEEDEDs radio sim/config-V2-ndk but references no V2
-    # symbols (uses V1 AIDL + HIDL); Soong rejects both radio versions.
+    # symbols (uses V1 AIDL + HIDL); the V1-namespace sim/config symbols come
+    # from the stock V1 blobs below. V2 stays stripped (Soong dup rule).
     'vendor/lib64/librilfusion.so': blob_fixup()
         .remove_needed('android.hardware.radio.sim-V2-ndk.so')
-        .remove_needed('android.hardware.radio.config-V2-ndk.so'),
+        .remove_needed('android.hardware.radio.config-V2-ndk.so')
+        .add_needed('android.hardware.radio.sim-V1-ndk.so')
+        .add_needed('android.hardware.radio.config-V1-ndk.so'),
     # pq_aidl V1-ndk DT_NEEDEDs graphics.common-V3-ndk for HardwareBuffer
     # parcel methods; V3 and V6 snapshots differ only in comments (same ABI),
     # so repoint at V6 (platform gralloctypes uses V6; Soong rejects both).
