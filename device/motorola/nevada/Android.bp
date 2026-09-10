@@ -1,0 +1,19 @@
+//
+// Copyright (C) The LineageOS Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+soong_namespace {
+    imports: [
+        "hardware/google/interfaces",
+        "hardware/google/pixel"
+    ],
+}
+
+install_symlink {
+    name: "vendor_mdota_symlink",
+    vendor: true,
+    installed_location: "etc/mdota",
+    symlink_target: "/mnt/vendor/mdota",
+}

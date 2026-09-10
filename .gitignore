@@ -1,0 +1,14 @@
+# Extracted stock blobs (regenerate with extract-files.py — not stored in git)
+vendor/motorola/nevada/proprietary/
+vendor/motorola/nevada/radio/
+# Build outputs / scratch
+out/
+*.img
+*.zip
+/tmp/
+# Editor / OS noise
+.DS_Store
+*~
+*.swp
+.idea/
+.vscode/

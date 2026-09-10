@@ -1,0 +1,4 @@
+# Motorola
+# TODO: confirm ro.mot.product_wave from firmware build.prop after extraction
+ro.mot.product_wave=2026.1
+ro.mot.build.customerid=retail

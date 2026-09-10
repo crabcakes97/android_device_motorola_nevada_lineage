@@ -1,0 +1,114 @@
+on property:sys.boot_completed=1
+    # PowerHAL Hint Processing
+    setprop vendor.powerhal.init 1
+
+    # Setup final cpuset
+    write /dev/cpuset/foreground/cpus 0-5,7
+    write /dev/cpuset/foreground_window/cpus 0-5,7
+    write /dev/cpuset/background/cpus 1-3
+    write /dev/cpuset/system-background/cpus 1-5
+    write /dev/cpuset/top-app/cpus 0-7
+    write /dev/cpuset/restricted/cpus 0-3
+
+    # Adjust watermark level
+    write /proc/sys/vm/watermark_scale_factor 200
+
+    setprop dalvik.vm.dex2oat-cpu-set 0,1,2,3,4,5,6
+    setprop dalvik.vm.dex2oat-threads 6
+
+    # fs
+    write /sys/block/sda/queue/iostats 0
+    write /sys/block/sda/queue/read_ahead_kb 512
+    write /sys/block/sda/queue/nr_requests 64
+    write /sys/block/sda/queue/iosched/slice_idle 0
+    write /dev/sys/fs/by-name/userdata/iostat_enable 0
+    write /dev/sys/fs/by-name/userdata/cp_interval 6000
+    write /dev/sys/fs/by-name/userdata/gc_urgent_sleep_time 200
+
+    # VM
+    write /proc/sys/vm/dirty_expire_centisecs 3000
+    write /proc/sys/vm/dirty_background_ratio 10
+
+    # memory reserve tuning
+    write /proc/sys/vm/min_free_kbytes 27386
+    write /proc/sys/vm/lowmem_reserve_ratio "0 0 0"
+
+    # disable khugepaged
+    write /sys/kernel/mm/transparent_hugepage/enabled "never"
+
+    # sched
+    write /proc/sys/kernel/sched_migration_cost_ns 250000
+    write /proc/sys/kernel/sched_latency_ns 5000000
+    write /proc/sys/kernel/sched_min_granularity_ns 500000
+    write /proc/sys/kernel/sched_wakeup_granularity_ns 2500000
+
+    # Disable printk logging
+    write /proc/sys/kernel/printk_devkmsg off
+
+    # Boot time tuning
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "performance"
+    write /sys/devices/system/cpu/cpu6/cpufreq/scaling_governor "performance"
+
+## Utilization Clamping
+    # Tuning
+    write /proc/sys/kernel/sched_util_clamp_min_rt_default 0
+    write /proc/sys/kernel/sched_util_clamp_min 128
+
+    # Real-Time tasks
+    write /dev/cpuctl/rt/cpu.uclamp.latency_sensitive 1
+    write /dev/cpuctl/rt/cpu.uclamp.max max
+    write /dev/cpuctl/rt/cpu.uclamp.min 0
+    write /dev/cpuctl/rt/cpu.shares 20480
+
+    # Background tasks for best efficiency
+    write /dev/cpuctl/background/cpu.uclamp.latency_sensitive 0
+    write /dev/cpuctl/system-background/cpu.uclamp.latency_sensitive 0
+    write /dev/cpuctl/background/cpu.shares 1024
+    write /dev/cpuctl/system-background/cpu.shares 2048
+    write /dev/cpuctl/background/cpu.uclamp.min 0
+    write /dev/cpuctl/background/cpu.uclamp.max 40
+    write /dev/cpuctl/system-background/cpu.uclamp.min 1
+    write /dev/cpuctl/system-background/cpu.uclamp.max 60
+
+    # Camera daemon tasks
+    write /dev/cpuctl/camera-daemon/cpu.uclamp.latency_sensitive 1
+    write /dev/cpuctl/camera-daemon/cpu.uclamp.max max
+    write /dev/cpuctl/camera-daemon/cpu.uclamp.min 70
+    write /dev/cpuctl/camera-daemon/cpu.shares 20480
+
+    # dex2oat tasks
+    write /dev/cpuctl/dex2oat/cpu.uclamp.latency_sensitive 0
+    write /dev/cpuctl/dex2oat/cpu.uclamp.max 60
+    write /dev/cpuctl/dex2oat/cpu.uclamp.min 0
+    write /dev/cpuctl/dex2oat/cpu.shares 2048
+
+    # Foreground tasks
+    write /dev/cpuctl/foreground/cpu.uclamp.latency_sensitive 1
+    write /dev/cpuctl/foreground/cpu.uclamp.min 1
+    write /dev/cpuctl/foreground/cpu.uclamp.max max
+    write /dev/cpuctl/foreground/cpu.shares 10240
+
+    # NeuralNetwork API HAL tasks
+    write /dev/cpuctl/nnapi-hal/cpu.uclamp.latency_sensitive 1
+    write /dev/cpuctl/nnapi-hal/cpu.uclamp.max max
+    write /dev/cpuctl/nnapi-hal/cpu.uclamp.min 90
+    write /dev/cpuctl/nnapi-hal/cpu.shares 20480
+
+    # Top app tasks
+    write /dev/cpuctl/top-app/cpu.uclamp.latency_sensitive 1
+    write /dev/cpuctl/foreground/cpu.uclamp.min 5
+    write /dev/cpuctl/top-app/cpu.uclamp.max max
+    write /dev/cpuctl/top-app/cpu.shares 20480
+
+    # End boot time tuning
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu6/cpufreq/scaling_governor "schedutil"
+
+service vendor.gralloc-4-0 /vendor/bin/hw/android.hardware.graphics.allocator@4.0-service-mediatek
+    class hal animation
+    interface android.hardware.graphics.allocator@4.0::IAllocator default
+    user system
+    group graphics drmrpc
+    capabilities SYS_NICE
+    onrestart restart surfaceflinger
+    task_profiles ProcessCapacityHigh HighPerformance

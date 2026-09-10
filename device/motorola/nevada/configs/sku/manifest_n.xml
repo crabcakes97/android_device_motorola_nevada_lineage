@@ -1,0 +1,112 @@
+<!--
+    Input:
+        manifest_nfc.xml
+        odm_manifest_secure_element_ss.xml
+        odm_manifest_op_ss.xml
+        odm_manifest_ss.xml
+        manifest_nxpnfc_bn.xml
+-->
+<manifest version="5.0" type="device">
+    <hal format="hidl">
+        <name>android.hardware.nfc</name>
+        <transport>hwbinder</transport>
+        <version>1.2</version>
+        <interface>
+            <name>INfc</name>
+            <instance>default</instance>
+        </interface>
+        <fqname>@1.2::INfc/default</fqname>
+    </hal>
+    <hal format="hidl" override="true">
+        <name>android.hardware.radio</name>
+        <transport>hwbinder</transport>
+        <version>1.2</version>
+        <interface>
+            <name>ISap</name>
+            <instance>slot1</instance>
+        </interface>
+        <fqname>@1.2::ISap/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>android.hardware.radio.data</name>
+        <fqname>IRadioData/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>android.hardware.radio.messaging</name>
+        <fqname>IRadioMessaging/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>android.hardware.radio.modem</name>
+        <fqname>IRadioModem/imsSlot1</fqname>
+        <fqname>IRadioModem/se1</fqname>
+        <fqname>IRadioModem/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>android.hardware.radio.network</name>
+        <fqname>IRadioNetwork/imsSlot1</fqname>
+        <fqname>IRadioNetwork/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>android.hardware.radio.sim</name>
+        <fqname>IRadioSim/imsSlot1</fqname>
+        <fqname>IRadioSim/se1</fqname>
+        <fqname>IRadioSim/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>android.hardware.radio.voice</name>
+        <fqname>IRadioVoice/imsSlot1</fqname>
+        <fqname>IRadioVoice/slot1</fqname>
+    </hal>
+    <hal format="hidl" override="true">
+        <name>android.hardware.secure_element</name>
+        <transport>hwbinder</transport>
+        <version>1.2</version>
+        <interface>
+            <name>ISecureElement</name>
+            <instance>SIM1</instance>
+        </interface>
+        <fqname>@1.2::ISecureElement/SIM1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>vendor.mediatek.hardware.mtkradioex.data</name>
+        <fqname>IMtkRadioExData/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>vendor.mediatek.hardware.mtkradioex.ims</name>
+        <fqname>IMtkRadioExIms/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>vendor.mediatek.hardware.mtkradioex.messaging</name>
+        <fqname>IMtkRadioExMessaging/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>vendor.mediatek.hardware.mtkradioex.modem</name>
+        <fqname>IMtkRadioExModem/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>vendor.mediatek.hardware.mtkradioex.network</name>
+        <fqname>IMtkRadioExNetwork/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>vendor.mediatek.hardware.mtkradioex.rcs</name>
+        <fqname>IMtkRadioExRcs/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>vendor.mediatek.hardware.mtkradioex.sim</name>
+        <fqname>IMtkRadioExSim/slot1</fqname>
+    </hal>
+    <hal format="aidl" override="true">
+        <name>vendor.mediatek.hardware.mtkradioex.voice</name>
+        <fqname>IMtkRadioExVoice/slot1</fqname>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.nxp.nxpnfc</name>
+        <transport>hwbinder</transport>
+        <version>2.0</version>
+        <interface>
+            <name>INxpNfc</name>
+            <instance>default</instance>
+        </interface>
+        <fqname>@2.0::INxpNfc/default</fqname>
+    </hal>
+</manifest>

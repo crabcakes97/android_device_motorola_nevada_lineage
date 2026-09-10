@@ -1,0 +1,8 @@
+cc_library_shared {
+    name: "libshim_fp",
+    srcs: ["libshim_fp.c"],
+    vendor: true,
+}
+
+// NOTE: no local libprocessgroup_shim: hardware/lineage/compat provides it
+// (same SetTaskProfiles stubs); building ours too is a packaging conflict.
