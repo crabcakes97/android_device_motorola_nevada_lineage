@@ -21,11 +21,12 @@ BoardConfig.mk  device.mk  lineage_nevada.mk  extract-files.py  ...
 audio/  configs/  init/  overlay/  sepolicy/  lights/  power/
 vibrator/  sensors/  fingerprint-egis/  fingerprint-gdx/  libshims/
 props/  proprietary-files.txt  proprietary-firmware.txt
-kernel/    # prebuilt stock kernel: Image.gz, dtb/, vendor/*.ko (196),
-           #   vendor_ramdisk/*.ko (197), modules.load.*
-vendor/    # generated makefiles (Android.bp/.mk); extracted binaries live in
-           #   vendor/proprietary/ + vendor/radio/ (NOT in git — regenerate below)
 ```
+
+Companion repos (standard split, not stored here): a vendor repo holding the
+generated makefiles plus extracted binaries (`proprietary/`, `radio/` —
+regenerate with `extract-files.py`), and a kernel repo holding the prebuilt
+`Image.gz`, DTB and modules (or kernel source).
 
 ## Stock baseline (everything here matches it)
 
