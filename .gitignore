@@ -1,7 +1,4 @@
-# Extracted stock blobs (regenerate with extract-files.py — not stored in git)
-vendor/proprietary/
-vendor/radio/
-# Build outputs / scratch
+# Local scratch / downloads (never committed)
 out/
 *.img
 *.zip
