@@ -43,11 +43,6 @@ def lib_fixup_vendor_suffix(lib: str, partition: str, *args, **kwargs):
 lib_fixups: lib_fixups_user_type = {
     **lib_fixups,
     ('vendor.mediatek.hardware.videotelephony@1.0',): lib_fixup_vendor_suffix,
-    (
-        'android.hardware.radio.sim-V1-ndk',
-        'android.hardware.radio.config-V1-ndk',
-        'android.hardware.security.keymint-V1-ndk',
-    ): lib_fixup_vendor_suffix,
 }
 
 blob_fixups: blob_fixups_user_type = {
@@ -98,15 +93,20 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/bin/hw/mtkfusionrild': blob_fixup()
         .add_needed('libutils-v32.so'),
     # libtpa DT_NEEDEDs keymint-V2-ndk but references no V2 symbols; its
-    # keymint refs are V1-namespace (fromBinder etc.), provided by the stock
-    # keymint-V1 blob below. V2 stays stripped so only one AIDL base version
-    # remains in the closure (Soong dup rule).
+    # keymint refs are V1-namespace (fromBinder etc.), provided by platform
+    # V1 (single installer, no blob). libkeymint.so (HIDL) is also unused
+    # (0 HIDL-named UND refs of 164) and only drags keymint-V4 into the
+    # closure (dup rule), so it goes too. IRemotelyProvisionedComponent is
+    # an RKP (not keymint) interface — platform rkp-V3 exports it. V2 stays
+    # stripped.
     'vendor/lib64/libtpa.so': blob_fixup()
         .remove_needed('android.hardware.security.keymint-V2-ndk.so')
-        .add_needed('android.hardware.security.keymint-V1-ndk.so'),
+        .remove_needed('libkeymint.so')
+        .add_needed('android.hardware.security.keymint-V1-ndk.so')
+        .add_needed('android.hardware.security.rkp-V3-ndk.so'),
     # librilfusion DT_NEEDEDs radio sim/config-V2-ndk but references no V2
-    # symbols (uses V1 AIDL + HIDL); the V1-namespace sim/config symbols come
-    # from the stock V1 blobs below. V2 stays stripped (Soong dup rule).
+    # symbols (uses V1 AIDL + HIDL). Both V1 libs resolve to platform copies
+    # (frozen V1 API carries the symbols). V2 stays stripped (Soong dup rule).
     'vendor/lib64/librilfusion.so': blob_fixup()
         .remove_needed('android.hardware.radio.sim-V2-ndk.so')
         .remove_needed('android.hardware.radio.config-V2-ndk.so')
