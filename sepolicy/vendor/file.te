@@ -1,0 +1,24 @@
+# Nevada file types referenced by rules/contexts but declared nowhere else
+# (neither platform, mediatek common, nor this tree). Attributes follow the
+# labeled paths in file_contexts/genfs_contexts.
+
+# Fingerprint data/state
+type vendor_fingerprint_sysfs, fs_type, sysfs_type;
+type vendor_fingerprint_data_file, file_type, data_file_type;
+type vendor_persist_fingerprint_file, file_type, data_file_type;
+
+# Camera data/state
+type vendor_persist_camera_file, file_type, data_file_type;
+type vendor_camera_data_file, file_type, data_file_type;
+type vendor_imager_data_file, file_type, data_file_type;
+type vendor_imager_metadata_file, file_type, data_file_type;
+
+# Vendor executables
+type vendor_motobox_exec, exec_type, vendor_file_type, file_type;
+type vendor_moto_init_shell_exec, exec_type, vendor_file_type, file_type;
+
+# Sysfs / proc nodes labeled in genfs_contexts
+type vendor_sysfs_gpu, fs_type, sysfs_type;
+type vendor_sysfs_input, fs_type, sysfs_type;
+type vendor_sysfs_touchpanel, fs_type, sysfs_type;
+type vendor_proc_hw, fs_type;

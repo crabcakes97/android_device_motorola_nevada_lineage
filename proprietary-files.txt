@@ -1258,7 +1258,9 @@ vendor/lib64/libcamera2ndk_vendor.so
 # REVERTED: dropped vendor/lib64/libcodec2_hidl@1.0.so;MODULE_SUFFIX=_vendor — platform C2 stack used wholesale; see platform patch note in extract-files.py
 # REVERTED: dropped vendor/lib64/libcodec2_hidl@1.1.so;MODULE_SUFFIX=_vendor — platform C2 stack used wholesale; see platform patch note in extract-files.py
 # REVERTED: dropped vendor/lib64/libcodec2_hidl@1.2.so;MODULE_SUFFIX=_vendor — platform C2 stack used wholesale; see platform patch note in extract-files.py
-vendor/lib64/libcodec2_hidl_plugin.so
+# NOTE: no libcodec2_hidl_plugin.so blob: stock copy predates
+# FilterWrapper::getParamReflector which platform ComponentStore calls;
+# platform builds the plugin from source (superset) instead.
 vendor/lib64/libcodec2_soft_ac4dec.so
 # AUTOFIX: dropped vendor/lib64/libcodec2_soft_common.so (platform builds libcodec2_soft_common for system; Soong partition mismatch)
 vendor/lib64/libcodec2_soft_ddpdec.so

@@ -1,7 +1,8 @@
 r_dir_file(mtk_hal_camera, persist_data_file)
 
 get_prop(mtk_hal_camera, vendor_mot_prop)
-get_prop(mtk_hal_camera, system_mot_camera_prop)
+# NOTE: system_mot_camera_prop dropped — type/property exist nowhere
+# (no declaration, no property_contexts label); dead rule from template.
 get_prop(mtk_hal_camera, vendor_mot_camera_prop)
 set_prop(mtk_hal_camera, vendor_mot_camera_prop)
 get_prop(mtk_hal_camera, vendor_persist_camera_prop)
