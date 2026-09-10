@@ -23,10 +23,22 @@ vibrator/  sensors/  fingerprint-egis/  fingerprint-gdx/  libshims/
 props/  proprietary-files.txt  proprietary-firmware.txt
 ```
 
-Companion repos (standard split, not stored here): a vendor repo holding the
-generated makefiles plus extracted binaries (`proprietary/`, `radio/` —
-regenerate with `extract-files.py`), and a kernel repo holding the prebuilt
-`Image.gz`, DTB and modules (or kernel source).
+Companion repos (required to build — clone these too):
+
+```bash
+# vendor blobs + generated makefiles -> vendor/motorola/nevada/
+git clone https://github.com/crabcakes97/android_vendor_motorola_nevada.git \
+    vendor/motorola/nevada
+# NOTE: install Git LFS first (git lfs install) — 4 files are LFS-hosted.
+# Without it you get pointer files instead of binaries.
+
+# prebuilt kernel + modules -> device/motorola/nevada-kernel/
+git clone https://github.com/crabcakes97/android_device_motorola_nevada-kernel.git \
+    device/motorola/nevada-kernel
+```
+
+(Alternative to cloning vendor: run `extract-files.py` against a firmware
+dump to regenerate `proprietary/` + `radio/` locally.)
 
 ## Stock baseline (everything here matches it)
 
