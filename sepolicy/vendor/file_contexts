@@ -33,7 +33,8 @@
 /data/vendor/goodix(/.*)? u:object_r:vendor_fingerprint_data_file:s0
 /mnt/vendor/persist/egis(/.*)? u:object_r:vendor_fingerprint_data_file:s0
 /mnt/vendor/persist/goodix(/.*)? u:object_r:vendor_fingerprint_data_file:s0
-/dev/goodix_fp u:object_r:fps_device:s0
+# NOTE: no /dev/goodix_fp label here — platform already labels it
+# fingerprint_device; duplicate specs fail the contexts build.
 
 # Mobicore TEE
 /mnt/vendor/tzapp(/.*)? u:object_r:mnt_vendor_trustlet_file:s0

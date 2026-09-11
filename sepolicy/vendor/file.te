@@ -16,6 +16,13 @@ type vendor_imager_metadata_file, file_type, data_file_type;
 # Vendor executables
 type vendor_motobox_exec, exec_type, vendor_file_type, file_type;
 type vendor_moto_init_shell_exec, exec_type, vendor_file_type, file_type;
+type vendor_modinstall-sh_exec, exec_type, vendor_file_type, file_type;
+
+# Device nodes
+# NOTE: no fps_device — platform labels /dev/goodix_fp fingerprint_device.
+
+# Mount point data
+type mnt_vendor_trustlet_file, file_type, data_file_type;
 
 # Sysfs / proc nodes labeled in genfs_contexts
 type vendor_sysfs_gpu, fs_type, sysfs_type;

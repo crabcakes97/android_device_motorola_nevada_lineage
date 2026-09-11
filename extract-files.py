@@ -64,8 +64,13 @@ blob_fixups: blob_fixups_user_type = {
         .replace_needed('libalsautils.so', 'libalsautils-v31.so'),
     ('vendor/lib64/mt6835/libcam.hal3a.v3.so', 'vendor/lib64/hw/hwcomposer.mtk_common.so'): blob_fixup()
         .add_needed('libprocessgroup_shim.so'),
+    # + libmotohid (failed check_elf the same way). Verified by scanning every
+    # extracted .so for the plain-Trim UND ref: exactly these need the shim
+    # (platform libbase carries only template overloads).
     ('vendor/lib64/mt6835/libneuralnetworks_sl_driver_mtk_prebuilt.so', 'vendor/lib64/libstfactory-vendor.so',
-     'vendor/lib64/libnvram.so', 'vendor/lib64/libsysenv.so', 'vendor/lib64/libtflite_mtk.so'): blob_fixup()
+     'vendor/lib64/libnvram.so', 'vendor/lib64/libsysenv.so', 'vendor/lib64/libtflite_mtk.so',
+     'vendor/lib64/ese_spi_nxp.so', 'vendor/lib64/ese_spi_nxp_snxxx.so',
+     'vendor/lib64/libmotohid.so', 'vendor/lib64/nfc_nci.nqx.default.hw.so'): blob_fixup()
         .add_needed('libbase_shim.so'),
     ('vendor/lib64/hw/android.hardware.camera.provider@2.6-impl-mediatek.so', 'vendor/lib64/mt6835/libmtkcam_stdutils.so',
      'vendor/lib64/sensors.moto.so'): blob_fixup()
