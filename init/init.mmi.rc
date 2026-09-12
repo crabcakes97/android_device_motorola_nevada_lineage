@@ -80,6 +80,7 @@ on post-fs-data
 
 service vendor.bl_logs_copy /vendor/bin/apanic_copy.sh -i
     class late_start
+    user system
     group log
     oneshot
     disabled
@@ -242,12 +243,12 @@ on property:ro.vendor.hw.dualsim=false
 
 service vendor.aplogd /vendor/bin/aplogd
      class late_start
-     #user log
-     #group log system sdcard_rw sdcard_r media_rw mount
-     # The user and group definitions above are intentionally disabled and left
-     # only as documentation. It actually starts as root and immediately drops
-     # to log plus those groups after preserving CAP_SYS_ADMIN, which is required
-     # for kernel logging.
+     user log
+     group log system sdcard_rw sdcard_r media_rw mount
+     capabilities SYS_ADMIN
+     # Stock started this as root and dropped to the user/groups above after
+     # preserving CAP_SYS_ADMIN for kernel logging; init now grants the cap
+     # directly so the declared user complies with the no-root verifier.
      disabled
 
 # from P onwards aplogd cannot read vold.post_fs_data_done so a new property

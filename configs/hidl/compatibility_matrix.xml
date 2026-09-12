@@ -34,9 +34,6 @@
             <instance>default</instance>
         </interface>
     </hal>
-    <vendor-ndk>
-        <version>33</version>
-    </vendor-ndk>
     <system-sdk>
         <version>33</version>
     </system-sdk>

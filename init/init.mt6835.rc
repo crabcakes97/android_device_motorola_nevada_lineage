@@ -957,6 +957,8 @@ service bugreport /system/bin/dumpstate -d -p -B -z \
     class late_start
     disabled
     oneshot
+    user system
+    group system shell
     keycodes 114 115 116
 
 # end boot time fs tune

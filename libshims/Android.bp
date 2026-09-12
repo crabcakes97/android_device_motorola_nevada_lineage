@@ -4,5 +4,19 @@ cc_library_shared {
     vendor: true,
 }
 
+cc_library_shared {
+    name: "libshim_crypto",
+    srcs: ["libshim_crypto.c"],
+    shared_libs: ["libcrypto"],
+    vendor: true,
+}
+
+cc_library_shared {
+    name: "libshim_binder",
+    srcs: ["libshim_binder.c"],
+    version_script: "libshim_binder.map",
+    vendor: true,
+}
+
 // NOTE: no local libprocessgroup_shim: hardware/lineage/compat provides it
 // (same SetTaskProfiles stubs); building ours too is a packaging conflict.

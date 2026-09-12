@@ -28,4 +28,4 @@ type mnt_vendor_trustlet_file, file_type, data_file_type;
 type vendor_sysfs_gpu, fs_type, sysfs_type;
 type vendor_sysfs_input, fs_type, sysfs_type;
 type vendor_sysfs_touchpanel, fs_type, sysfs_type;
-type vendor_proc_hw, fs_type;
+type vendor_proc_hw, fs_type, proc_type;

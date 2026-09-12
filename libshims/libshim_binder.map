@@ -1,0 +1,6 @@
+LIBBINDER {
+  global:
+    _ZNK7android6Parcel5printERNS_10TextOutputEj;
+  local:
+    *;
+};

@@ -62,9 +62,11 @@ PRODUCT_PACKAGES +=\
 
 PRODUCT_PACKAGES += \
     audio.primary.default \
-    audio.r_submix.default \
     audio.bluetooth.default \
     audio.usb.default
+# NOTE: no audio.r_submix.default — stock loads the MTK blob via the mt6835
+# name (audio.r_submix.mediatek.so + symlink, already in blob list); the
+# platform module can't even compile (missing AudioBufferProvider.h path).
 
 PRODUCT_PACKAGES += \
     audio_policy.stub \
@@ -83,12 +85,11 @@ PRODUCT_PACKAGES += \
     com.android.hardware.boot \
     android.hardware.boot-service.default_recovery
 
-# Bluetooth (stock MTK service blob)
+# Bluetooth (stock MTK service blob; MTK audio-impl blob serves the v2
+# provider factory per stock — no source audio-impl, whose v5 fragment
+# conflicts with the manifest's v2 stanza)
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.1-service-mediatek
-
-PRODUCT_PACKAGES += \
-    android.hardware.bluetooth.audio-impl
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.bluetooth.xml \
@@ -149,8 +150,14 @@ PRODUCT_PACKAGES += \
 # Fingerprint
 # Stock goodix + fpc 2.1 services and Moto fingerprint HAL run from blobs.
 # libshim_fp supplies IMotoFingerPrint HIDL stubs the blobs expect.
+# libshim_crypto supplies sk_dup() for hs20-osu-client (CBS_init comes from
+# platform libcrypto_shim).
+# libshim_binder supplies Parcel::print(TextOutput) for vndservice (debug
+# dump removed from platform libbinder; stub reports success).
 PRODUCT_PACKAGES += \
-    libshim_fp
+    libshim_fp \
+    libshim_crypto \
+    libshim_binder
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.fingerprint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.fingerprint.xml

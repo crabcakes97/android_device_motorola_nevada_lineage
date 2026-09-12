@@ -1243,7 +1243,8 @@ vendor/lib64/libanc_sn_adapter_rear_main_2.so
 # AUTOFIX: dropped vendor/lib64/libaudiofoundation.so (platform builds libaudiofoundation for system; Soong partition mismatch)
 # AUTOFIX: dropped vendor/lib64/libavservices_minijail.so (platform builds libavservices_minijail for system; Soong partition mismatch)
 # AUTOFIX: dropped vendor/lib64/libbinderdebug.so (platform builds libbinderdebug for system; Soong partition mismatch)
-vendor/lib64/libbluetooth_audio_session.so
+# NOTE: no libbluetooth_audio_session.so blob: it shadows platform's source
+# lib whose headers audio.bluetooth.default needs; platform copy serves.
 # NOTE: no libbluetooth_audio_session_aidl.so: platform builds it (V5) and our
 # copy drags stale V2 into its closure (aidl-version conflict).
 vendor/lib64/libbluetooth_audio_session_aidl_mediatek.so
@@ -1293,8 +1294,9 @@ vendor/lib64/libgoodixhwfingerprint.so
 vendor/lib64/libhidparser.so
 # NOTE: no vendor/lib64/libhwbinder.so: platform builds libhwbinder for system
 # and Soong rejects a same-named vendor prebuilt (partition mismatch).
-vendor/lib64/libhwc2on1adapter.so
-vendor/lib64/libhwc2onfbadapter.so
+# NOTE: no libhwc2on1adapter.so / libhwc2onfbadapter.so blobs: they shadow
+# platform source libs whose headers the composer service needs.
+# (fb adapter found right after the on1 adapter the same way.)
 # AUTOFIX: dropped vendor/lib64/libkeymaster_messages.so (platform builds libkeymaster_messages for system; Soong partition mismatch)
 # AUTOFIX: dropped vendor/lib64/libkeymaster_portable.so (platform builds libkeymaster_portable for system; Soong partition mismatch)
 # AUTOFIX: dropped vendor/lib64/libkeymint.so (platform builds libkeymint for system; Soong partition mismatch)
@@ -1312,7 +1314,10 @@ vendor/lib64/libnbaio_mono.so
 vendor/lib64/libnetconfig_vendor.so
 vendor/lib64/libneuron_runtime_vpp.6.so
 vendor/lib64/libnxp_extamp_intf.so
-# AUTOFIX: dropped vendor/lib64/libpcap.so (platform builds libpcap for system; Soong partition mismatch)
+# Stock libpcap.so restored as libpcap_mtk.so: libpkm needs pcap_findalldevs_interfaces,
+# which only the stock 1.9 libpcap exports (platform 1.10 removed it). Renamed because
+# platform's vendor libpcap variant already installs vendor/lib64/libpcap.so.
+vendor/lib64/libpcap.so:vendor/lib64/libpcap_mtk.so
 vendor/lib64/libperfctl_vendor.so
 vendor/lib64/libpkip.so
 vendor/lib64/libpkm.so
@@ -1613,7 +1618,9 @@ vendor/bin/hw/vendor.mediatek.hardware.pq_aidl-service
 # AUTOFIX-PACKAGING: dropped vendor/etc/vintf/manifest/android.hardware.drm-service.clearkey.xml (platform installs android.hardware.drm-service.clearkey.xml to same path)
 # AUTOFIX-PACKAGING: dropped vendor/etc/vintf/manifest/android.hardware.health-service.example.xml (platform installs android.hardware.health-service.example.xml to same path)
 # AUTOFIX-PACKAGING: dropped vendor/etc/vintf/manifest/android.hardware.sensors-multihal.xml (platform installs same path)
-vendor/etc/vintf/manifest/android.hardware.usb-aidl-service.mediatek.xml
+# NOTE: no android.hardware.usb-aidl-service.mediatek.xml: duplicates the
+# source-built usb-service.mediatek fragment (VINTF conflict); the blob rc's
+# service binary was never extracted either.
 vendor/etc/vintf/manifest/android.hardware.usb.gadget-service.mediatek.xml
 # AUTOFIX-PACKAGING: dropped vendor/etc/vintf/manifest/android.hardware.wifi.hostapd.xml (platform installs same path)
 # AUTOFIX-PACKAGING: dropped vendor/etc/vintf/manifest/android.hardware.wifi.supplicant.xml (platform installs same path)
@@ -1632,7 +1639,9 @@ vendor/etc/vintf/manifest/manifest_cameraproviderhidl.xml
 vendor/etc/vintf/manifest/manifest_clientapi.xml
 vendor/etc/vintf/manifest/manifest_media_c2_V1_1_atom_only.xml
 vendor/etc/vintf/manifest/manifest_rcs.xml
-vendor/etc/vintf/manifest/memtrack-mediatek.xml
+# NOTE: no memtrack-mediatek.xml: duplicates the source-built
+# android.hardware.memtrack-service.mediatek-mali fragment (VINTF conflict);
+# its service binary was never extracted either.
 vendor/etc/vintf/manifest/motorola.hardware.fm.service.xml
 vendor/etc/vintf/manifest/motorola.hardware.health.service.xml
 vendor/etc/vintf/manifest/motorola.hardware.input@1.1-service.xml
@@ -2015,7 +2024,6 @@ vendor/etc/init/init.gf_ident.rc
 vendor/etc/init/init.thermal_core.rc
 vendor/etc/init/init.wmt_drv.rc
 vendor/etc/init/lights-mtk-default.rc
-vendor/etc/init/memtrack-mediatek.rc
 vendor/etc/init/motorola.hardware.fdrcontrol@1.2-service.rc
 vendor/etc/init/motorola.hardware.fm.service.rc
 vendor/etc/init/motorola.hardware.health.service.rc
@@ -2054,7 +2062,9 @@ vendor/etc/motorola/tcmd/cid_template.unlocked
 # MotorolaSettings (nevada)
 # NOTE: no tcmdaidl-service: its DT_NEEDED libandroidicu is not visible to the
 # vendor namespace (Soong visibility) and it is factory-test only.
-system_ext/bin/hw/motorola.hardware.tcmd@1.0-service
+# NOTE: no motorola.hardware.tcmd@1.0-service (+rc+vintf): its rc declares an
+# interface with no hidl_interface target in the build (verifier rejects it);
+# factory-test HAL, not in the device manifest.
 system_ext/etc/MotoDesktopAppConfig/com.motorola.launcher3.desktop-config.xml
 system_ext/etc/MotoDesktopAppConfig/personalize-desktop-config.xml
 system_ext/etc/default-permissions/default-permission-com.motorola.ccc.notification.xml
@@ -2074,7 +2084,6 @@ system_ext/etc/enable-disable-packages/enable-disable-com.motorola.nfwlocationat
 system_ext/etc/enable-disable-packages/enable-disable-com.motorola.rcsConfigService.xml
 system_ext/etc/enable-disable-packages/enable-disable-com.motorola.spectrum.setup.extensions.xml
 system_ext/etc/enable-disable-packages/enable-disable-com.motorola.sstservice.xml
-system_ext/etc/init/motorola.hardware.tcmd@1.0-service.rc
 system_ext/etc/motorola/bgintents/com.motorola.lifetimedata.bgintents.xml
 system_ext/etc/nondisable/com.motorola.ccc.devicemanagement.nondisable.xml
 system_ext/etc/nondisable/com.motorola.ccc.ota.xml
@@ -2166,7 +2175,6 @@ system_ext/etc/sysconfig/preinstalled-packages-com.motorola.android.nativedropbo
 system_ext/etc/sysconfig/preinstalled-packages-com.motorola.bug2go.xml
 system_ext/etc/sysconfig/whitelist_com.motorola.motocare.xml
 system_ext/etc/sysconfig/whitelist_com.motorola.rcsConfigService.xml
-system_ext/etc/vintf/manifest/motorola.hardware.tcmd@1.0-service.xml
 system_ext/framework/com.motorola.imager.w.jar
 system_ext/framework/com.motorola.libimgTuner.jar
 system_ext/framework/moto-echolocateapi.jar

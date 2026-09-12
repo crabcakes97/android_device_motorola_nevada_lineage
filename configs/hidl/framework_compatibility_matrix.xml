@@ -202,7 +202,7 @@
     </hal>
     <hal format="hidl" optional="true">
         <name>com.motorola.hardware.biometric.fingerprint</name>
-        <version>1.1</version>
+        <version>1.0-1</version>
         <interface>
             <name>IMotoFingerPrint</name>
             <instance>default</instance>
@@ -283,7 +283,7 @@
     </hal>
     <hal format="aidl" optional="true">
         <name>com.motorola.hardware.display.touch</name>
-        <version>1-2</version>
+        <version>1-3</version>
         <interface>
             <name>IMotTouch</name>
             <instance>default</instance>
@@ -339,6 +339,14 @@
         </interface>
     </hal>
     <hal format="aidl" optional="true">
+        <name>motorola.hardware.fm</name>
+        <version>1</version>
+        <interface>
+            <name>IMotFMRadio</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
         <name>motorola.hardware.haptic</name>
         <interface>
             <name>IMotHaptic</name>
@@ -350,6 +358,14 @@
         <version>2.0</version>
         <interface>
             <name>IMotHealth</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="aidl" optional="true">
+        <name>motorola.hardware.health</name>
+        <version>1</version>
+        <interface>
+            <name>IMotoHealth</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -1576,6 +1592,14 @@
         </interface>
         <interface>
             <name>IFastCharge</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="true">
+        <name>vendor.dolby.hardware.dms</name>
+        <version>2.1</version>
+        <interface>
+            <name>IDms</name>
             <instance>default</instance>
         </interface>
     </hal>
